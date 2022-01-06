@@ -1,13 +1,13 @@
 // Whether the legendary, platinum, gold, silver, and bronze cars are available, true means available, false means unavailable
 var mpLevelName = ['legend', 'platinum', 'gold', 'silver', 'bronze'];
-var mpStatus    = [ false,    false,      true,  true,     true];
+var mpStatus    = [ false,    false,      false,  false,     true];
 
 var mpCarPick = {
     legend: [1, 2, 3, 4],
     platinum: [1,2,3,4,5,6,7,8,9,10,12,13,14,15,16],
     gold: [1,3,2],
     silver: [1,2,3],
-    bronze: [5,7,3]
+    bronze: [10,12,18,24,27]
 };
 var mpCarPickSS = {
     legend: [1, 2, 3, 4],
@@ -31,8 +31,8 @@ var mp2CarPick = {
     // bronze
     bronze: [1,2,3,4,5,6,7,8]
 };
-var chCarPick = [11,13,17,19,21,23,26,27,29];
-//var simpleRouteSelector = ['ramp.png', 'ramp_left', 'ramp_right'];
+var chCarPick = [7,8,11,12];
+var simpleRouteSelector = ['ramp.png', 'ramp_left', 'ramp_right'];
 module.exports = {
     traceOn: false,
     width: 2340,
