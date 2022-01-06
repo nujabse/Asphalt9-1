@@ -7,7 +7,7 @@ var mpCarPick = {
     platinum: [1,2,3,4,5,6,7,8,9,10,12,13,14,15,16],
     gold: [1,3,2],
     silver: [1,2,3],
-    bronze: [10,12,18,24,27]
+    bronze: [50,46,38,39,33,18,24,27]
 };
 var mpCarPickSS = {
     legend: [1, 2, 3, 4],
@@ -161,7 +161,7 @@ module.exports = {
         firstCar: { x: 406, y: 633, colorFull: '#c3fb13', colorEmpty: '#ff0054' },
 
         // Vehicle spacing
-        distance: { x: 674, y: 345, inertia: 30 }, //26-60fps
+        distance: { x: 674, y: 345, inertia: 25 }, //26-60fps
         
         // First car
         firstCarFlat: { x: 223, y: 640, colorFull: '#c3fb13', colorEmpty: '#ff0054' },
