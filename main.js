@@ -1,6 +1,6 @@
 const DEVICE = require('device.js');
 const PLAY = require('play.js').mp;
-const HUNT = require('play.js').chse;
+const HUNT = require('play.js').ch;
 const base = require('play.js').base;
 
 toast("The program will start running after 7 seconds, please quickly switch to the main interface of the game");
@@ -10,7 +10,7 @@ sleep(4000);
 
 DEVICE.checkPermission();
 DEVICE.setEventListener();
-DEVICE.savePower();
+// DEVICE.savePower();
 
 var startTime = new Date().getTime();
 
