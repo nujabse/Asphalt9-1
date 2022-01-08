@@ -31,7 +31,7 @@ var mp2CarPick = {
     // bronze
     bronze: [1,2,3,4,5,6,7,8]
 };
-var chCarPick = [7,8,11,12];
+var chCarPick = [2,4,5,6,7];
 var simpleRouteSelector = ['ramp.png', 'ramp_left', 'ramp_right'];
 module.exports = {
     traceOn: false,
@@ -68,7 +68,7 @@ module.exports = {
     ch:{
         start: { x: 1743, y: 900, color: '#c3fb12' },
         carPick : chCarPick,
-        carPickMode: "down",
+        carPickMode: "flat",
         noTicketLeft: { x: 171, y: 938, color: '#1c5ab1'},
 		noTicketRight: { x: 2172, y:938, color: '#1c5ab1'},
 
