@@ -23,8 +23,8 @@ var counter = { MP: 0, CH: 0 };
 const option1 = require('./profile.js').mp1;
 const option2 = require('./profile.js').mp2;
 
-var huntCounts = 1;
-var huntEveryMinutes = huntCounts * 2 * 10;
+var huntCounts = 4;
+var huntEveryMinutes = huntCounts * 10;
 
 var mp2Counts = 10;
 var mp2EveryMinutes = 20;
