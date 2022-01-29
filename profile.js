@@ -1,6 +1,6 @@
 // Whether the legendary, platinum, gold, silver, and bronze cars are available, true means available, false means unavailable
 var mpLevelName = ['legend', 'platinum', 'gold', 'silver', 'bronze'];
-var mpStatus    = [ true,    true,      true,  true,     true];
+var mpStatus    = [ false,    false,      false,  false,     true];
 var mpCarPickABC = {
     legend: ['B5', 'A5', 'S5'],
     platinum: ['C5', 'B5', 'A4'],
@@ -65,7 +65,7 @@ module.exports = {
     mp1: {
         levelName : mpLevelName,
         status : mpStatus,
-        carPick : chCarPickABC,
+        carPick : mpCarPickABC,
         game: 1,
         carPickMode: "ordinary-abc"
     },
