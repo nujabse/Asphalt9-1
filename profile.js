@@ -1,13 +1,13 @@
 // Whether the legendary, platinum, gold, silver, and bronze cars are available, true means available, false means unavailable
 var mpLevelName = ['legend', 'platinum', 'gold', 'silver', 'bronze'];
-var mpStatus    = [ false,    false,      false,  false,     true];
+var mpStatus    = [ false,    false,      false,  true,     true];
 
 var mpCarPick = {
     legend: [1, 2, 3, 4],
     platinum: [1,2,3,4,5,6,7,8,9,10,12,13,14,15,16],
-    gold: [1,3,2],
-    silver: [1,2,3],
-    bronze: [53,54,47,48,38,33,18,39,24]
+    gold: [6,3,4, 7, 12, 14, 16,18],
+    silver: [7, 9, 11, 14, 21],
+    bronze: [7, 12, 13, 17]
 };
 var mpCarPickSS = {
     legend: [1, 2, 3, 4],
@@ -68,10 +68,10 @@ module.exports = {
     ch:{
         start: { x: 1743, y: 900, color: '#c3fb12' },
         carPick : chCarPick,
-        carPickMode: "flat",
+        carPickMode: "down",
         noTicketLeft: { x: 171, y: 938, color: '#1c5ab1'},
 		noTicketRight: { x: 2172, y:938, color: '#1c5ab1'},
-
+        carPickSwipeLimit: 6,
         specialSelector: { x: 486, y:606, color: '#fc0155'},
         specialSelected: { x: 1218, y:246, color: '#ed2c23'},
         specialHunt: { x: 578, y:909, color: '#0e7c9c'},
