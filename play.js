@@ -65,6 +65,10 @@ module.exports = {
                 sleep(500);
             } 
         },
+        testParseNavigation()
+        {
+            log(parseNavigation(profile.ch.navigation));
+        }
     },
     //==========================================================================
     // Multiplayer
@@ -355,9 +359,9 @@ module.exports = {
                     tries = 0;
                     PressNitro();
                     //PressNitro();
-                    if (profile.routeSelector && (nowTime - routeTime) > 3000)
+                    if (profile.mpSignSet && (nowTime - routeTime) > 3000)
                     {
-                        var t = ImageClicker(profile.routeSelector, routeRegion);
+                        var t = SignClicker(profile.mpSignSet, routeRegion);
                         if (t)
                             routeTime =  new Date().getTime();
                     }
@@ -617,6 +621,21 @@ module.exports = {
             var brkc = 4;
             var chStatus = "";
             var routeTime =  new Date().getTime();
+            var nitroTime =  new Date().getTime();
+            var raceStart = false;
+            var raceTime =  null;
+
+            //check nav data
+            var route = null;
+            if (profile.ch.navigation != null)
+                route = parseNavigation(profile.ch.navigation);
+            
+            var nitroTick = 200;
+            if (profile.ch.nitroTick != null)
+                nitroTick = profile.ch.nitroTick;
+
+            var currentRoute = profile.huntSignSet;
+
             // Check if you have reached the checkout interface
             while (true) {
                 var nowTime = new Date().getTime();
@@ -654,6 +673,11 @@ module.exports = {
                 }
                 // If you have not finished running, you can still click on nitrogen
                 else {
+                    if (!raceStart && chStatus == "race")
+                    {
+                        raceStart = true;
+                        raceTime =  new Date().getTime();
+                    }
                     // reset accidental exit 
                     tries = 0;
                     /*brkc--;
@@ -662,15 +686,65 @@ module.exports = {
                         brkc = 2;
                         PressBrake();
                     }*/
-                    PressNitro();
-                    if (profile.routeHuntSelector && (nowTime - routeTime) > 3000)
+                    if (raceStart && route != null)
                     {
-                      var t = ImageClicker(profile.routeHuntSelector, routeRegion);
-                      if (t)
-                          routeTime =  new Date().getTime();
+                        for (let i = 0; i < route.length; i++) {
+                            let item = route[i];
+                            if (!item.fire && (nowTime-raceTime) > item.time)
+                            {
+                                item.fire = true;
+
+                                if (item.type == "drift")
+                                    PressBrake(item.dur);
+
+                                if (item.type == "drift-flash")
+                                {
+                                    PressBrake(item.dur);
+                                    sleep(50);
+                                    PressNitro();
+                                    PressNitro();
+                                }
+
+                                if (item.type == "flash")
+                                {
+                                    PressNitro();
+                                    PressNitro();
+                                }
+
+                                if (item.type == "360")
+                                {
+                                    PressBrake();
+                                    PressBrake();
+                                }
+
+                                if (item.type == "360-flash")
+                                {
+                                    PressBrake();
+                                    PressBrake();
+                                    sleep(50);
+                                    PressNitro();
+                                    PressNitro();
+                                }
+
+                                if (item.type == "route")
+                                    currentRoute = item.path
+                            }
+                        }
+                    }
+
+                    if ((nowTime - nitroTime) > nitroTick)
+                        PressNitro();
+
+                    if (currentRoute && (nowTime - routeTime) > 3000)
+                    {
+                        var t = SignClicker(currentRoute, routeRegion);
+                        if (t)
+                        {
+                            routeTime =  new Date().getTime();
+                        }
                     }    
                 }
-                sleep(950);
+                sleep(100);
             }
             toastLog(++cnt.CH + " car hunt done, t.avg" +parseInt((nowTime - startTime)/1000/cnt.CH)+" second.");
         },
@@ -997,9 +1071,9 @@ module.exports = {
                         PressBrake();
                     }
                     PressNitro();
-                    if (profile.routeHuntSelector && (nowTime - routeTime) > 3000)
+                    if (profile.huntSESignSet && (nowTime - routeTime) > 3000)
                     {
-                        var t = ImageClicker(profile.routeHuntSelector, routeRegion);
+                        var t = SignClicker(profile.huntSESignSet, routeRegion);
                         if (t)
                             routeTime =  new Date().getTime();
                     }
@@ -1332,7 +1406,7 @@ function hasFuelABC(level, cars)
 
     //last bottom car
     log('click last bottom car');
-    robot.click( 1000, 800);
+    robot.click( 1050, 800);
     sleep(2000);
 
     nowTime = new Date().getTime();
@@ -1341,7 +1415,7 @@ function hasFuelABC(level, cars)
 
         var img = captureScreen();
 
-        var canGo = isSimilar(img, {x: 1664, y: 914, color: "#ff0054"}, 3) && !isEquals(img, {x: 1813, y: 1015, color: "#ffffff"});
+        var canGo = isSimilar(img, {x: 1664, y: 914, color: "#ff0054"}, 3) && !(isEquals(img, {x: 1813, y: 1015, color: "#ffffff"}) || isEquals(img, {x: 1813, y: 1015, color: "#000921"}));
         if (canGo)
         {    
             var currCarStar = GetCarStar(img);
@@ -1383,7 +1457,7 @@ function hasFuelFlatABC(cars)
 
         var img = captureScreen();
 
-        var canGo = isSimilar(img, {x: 1664, y: 914, color: "#ff0054"}, 3) && !isEquals(img, {x: 1813, y: 1015, color: "#ffffff"});
+        var canGo = isSimilar(img, {x: 1664, y: 914, color: "#ff0054"}, 3) && !(isEquals(img, {x: 1813, y: 1015, color: "#ffffff"}) || isEquals(img, {x: 1813, y: 1015, color: "#000921"}));
         if (canGo)
         {    
             var currCarStar = GetCarStar(img);
@@ -1601,7 +1675,7 @@ function getCurrentLeagueLevel()
 function swipeToBegin()
 {
     let slp = 500;
-    for(let j = 0; j < 5; j++) {
+    for(let j = 0; j < 8; j++) {
         toast("--->");
         sleep(slp);
         robot.swipe(profile.width / 5, profile.garage.firstCar.y, (profile.width / 5) * 4, profile.garage.firstCar.y, 400);
@@ -1765,6 +1839,82 @@ function IsFlashingButton(point, timeoutSec)
     return false;    
 }
 //------
+function ImageFinder(folder, region)
+{
+    //var folder = profile.adCloserFolder;
+    if (!folder)
+        return false;
+    var list = files.listDir(folder);
+    var len = list.length;
+    if(len > 0){
+        var imgad = captureScreen();
+        for(let i = 0; i < len; i++){
+            var fileName = list[i];
+            if (fileName.toLowerCase().endsWith(".png") || fileName.toLowerCase().endsWith(".jpg"))
+            {
+                var templatePath = files.join(folder, fileName);
+                var template = images.read(templatePath);
+                var pos = null;
+                if (region)
+                    pos = images.findImage(imgad, template, {threshold:0.85, region: region});
+                else
+                    pos = images.findImage(imgad, template, {threshold:0.85});    
+                width = template.getWidth();
+                height = template.getHeight();
+                template.recycle();
+                if(pos){
+                    imgad.recycle();
+                    return true
+                }  
+            }
+        }
+        imgad.recycle();
+    }
+    return false
+}
+//------
+function SignClicker(filter, region)
+{
+    //var folder = profile.adCloserFolder;
+    if (!filter)
+        return false;
+
+    let folder = profile.signsFolder;
+
+    var list = filter.split(',');;
+    var len = list.length;
+    if(len > 0){
+        var imgad = captureScreen();
+        for(let i = 0; i < len; i++){
+            var fileName = files.join(folder, list[i].trim()+'.png');
+            log(fileName);
+            var sign = images.read(fileName);
+            var pos = null;
+            if (region)
+                pos = images.findImage(imgad, sign, {threshold:0.8, region: region});
+            else
+                pos = images.findImage(imgad, sign, {threshold:0.8});    
+            width = sign.getWidth();
+            height = sign.getHeight();
+            sign.recycle();
+            if(pos){
+
+                var middle = {
+                    x: Math.round(pos.x + width/2), 
+                    y: Math.round(pos.y + height/2)
+                };
+                robot.click(middle.x, middle.y);
+                log('Click button ' + fileName + ' ' + middle.x + ', ' +  middle.y)
+                //sleep(2000)
+                return true;
+            }  
+
+        }
+        imgad.recycle();
+    }
+    return false
+}
+//------
 function ImageClicker(folder, region)
 {
     //var folder = profile.adCloserFolder;
@@ -1805,6 +1955,7 @@ function ImageClicker(folder, region)
     }
     return false
 }
+//------
 function FindImage(folder, fileName, region)
 {
     if (!folder)
@@ -1859,6 +2010,77 @@ function PressBrake(duration) {
     } else {
         robot.click(profile.width * 1 / 5, profile.height / 2);
     }
+}
+//------
+function parseNavigation(nav)
+{
+    var res = [];
+    if (nav != null)
+    {
+        for (let i = 0; i < nav.length; i++) {
+            let navParams = nav[i].split('|');
+            if (navParams[1] == "drift")
+            {
+                res.push({
+                    fire: false, 
+                    type:"drift", 
+                    time: parseInt(navParams[0], 10), 
+                    dur: parseInt(navParams[2], 10)});
+            }
+            if (navParams[1] == "drift-flash")
+            {
+                res.push({
+                    fire: false, 
+                    type:"drift-flash", 
+                    time: parseInt(navParams[0], 10), 
+                    dur: parseInt(navParams[2], 10)});
+            }
+            if (navParams[1] == "flash")
+            {
+                res.push({
+                    fire: false, 
+                    type:"flash", 
+                    time: parseInt(navParams[0], 10)});
+            }
+            if (navParams[1] == "360")
+            {
+                res.push({
+                    fire: false, 
+                    type:"360", 
+                    time: parseInt(navParams[0], 10)});
+            }
+            if (navParams[1] == "360-flash")
+            {
+                res.push({
+                    fire: false, 
+                    type:"360-flash", 
+                    time: parseInt(navParams[0], 10)});
+            }
+            if (navParams[1] == "route")
+            {
+                let newSigns = "";
+                if (navParams.length >= 3)
+                    newSigns = navParams[2];
+                res.push({
+                    fire: false, 
+                    type:"route", 
+                    time: parseInt(navParams[0], 10), 
+                    path: newSigns});
+            }
+        }
+    }
+    return res;
+}
+//------
+function SignAllowed(arr, item){
+    if (!arr || !item)
+        return false;
+
+    for(let i = 0; i < arr.length; i++){
+        if (arr[i].trim()+'.png' == item.trim())
+            return true;
+    }
+    return false;
 }
 //------
 function Restart(appName){

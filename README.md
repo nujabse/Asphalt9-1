@@ -21,14 +21,41 @@ TODO:
 [example race](https://www.youtube.com/watch?v=yx-xXiE0fXM)
 
 Latest changes:  
-new cars pick mode
-![image](https://user-images.githubusercontent.com/25618671/151057874-25e0d8a1-c81a-4240-acfa-589710c33903.png)
-![image](https://user-images.githubusercontent.com/25618671/151058686-835431ca-24b8-48e9-8095-f6e7b8a24e29.png)
+💥navigation refactoring  
+Now there is only one directory with all available signs, and in the route sets the signs that will be active 
+![image](https://user-images.githubusercontent.com/25618671/155859660-de0f80e0-7660-479b-9e60-939ab20ab3da.png)
 
-![image](https://user-images.githubusercontent.com/25618671/129003862-c02b4ad4-6e7c-4d51-8911-f836e44c7e65.png)
+<hr>
 
-![image](https://user-images.githubusercontent.com/25618671/127921833-0233cee2-785c-48f1-9b72-46d4bad7b2db.png)
+💥hunt navigation
+![image](https://user-images.githubusercontent.com/25618671/152245137-fd79636b-e7fa-4f84-ab56-c99c3053e8ce.png)
+__actions__:
+- *route* - change the directory with navigation signs  
+- *drift* - pressing the brake with a specified duration  
+- *flash* - double-tap on the gas  
+- *360* - double-tap on the brake  
+- *drift-flash* - pressing the brake with a specified duration then double-tap on the gas  
+- *360-flash* - double-tap on the brake then double-tap on the gas  
 
-![image](https://user-images.githubusercontent.com/25618671/122649266-78d3e280-d146-11eb-95f8-530ed53af843.png)
+__format__: {*action*|time|option}  
+- *action*: see actions above
+- time: time of command execution from the start of the race in milliseconds
+- option: parameter depends on the command  
 
+<hr>
 
+💥new cars pick mode  
+![image](https://user-images.githubusercontent.com/25618671/152342720-a816db41-a0f2-40df-8c9a-901c545c12b8.png)
+![image](https://user-images.githubusercontent.com/25618671/152342782-00fbbcbd-e1af-4035-8e93-5ba5959a7a1e.png)
+
+<hr>
+
+![image](https://user-images.githubusercontent.com/25618671/152342822-e86691f0-fb55-4318-9b84-de350041a7cb.png)
+
+<hr>
+
+![image](https://user-images.githubusercontent.com/25618671/152342856-3384f3e0-eaaf-40eb-a486-71d95a6d84cc.png)
+
+<hr>
+
+![image](https://user-images.githubusercontent.com/25618671/152342891-4ee37d45-b6a7-4d23-b15a-6b3c15208c96.png)

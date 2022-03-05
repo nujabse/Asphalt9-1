@@ -1,3 +1,4 @@
+const navs = require('./navigations.js');
 // Whether the legendary, platinum, gold, silver, and bronze cars are available, true means available, false means unavailable
 var mpLevelName = ['legend', 'platinum', 'gold', 'silver', 'bronze'];
 var mpStatus    = [ false,    false,      true,  true,     true];
@@ -47,6 +48,7 @@ var mp2CarPickABC = {
 var chCarPick = [32,35];
 var chCarPickABC = ['D4'];
 //var simpleRouteSelector = ['ramp.png', 'ramp_left', 'ramp_right'];
+
 module.exports = {
     traceOn: false,
     width: 2340,
@@ -58,9 +60,10 @@ module.exports = {
     networkPage: 4,
     carHuntPosition: 5, // negative values mean from the end
     adCloserFolder: './Images/AdCloser/', 
-    routeSelector: './Images/TrafficSigns/',
-    routeHuntSelector: './Images/TrafficSignsHunt/',
-    
+    signsFolder: './Images/TrafficSigns/',
+    mpSignSet: 'ramp, ramp_left, ramp_right',
+    huntSignSet: 'ramp, ramp_left, ramp_right',
+    huntSESignSet: 'ramp, ramp_left, ramp_right',
     // Multiplayer 1 data
     mp1: {
         levelName : mpLevelName,
@@ -72,11 +75,11 @@ module.exports = {
     // Multiplayer 2 data
     mp2: {
         levelName : mp2LevelName,
-        status : mp2Status,
-        carPick : mp2CarPickABC,
+        status : mpStatus,
+        carPick : mpCarPickABC,
         game: 2,
-        carPickMode: "ordinary-abc",
-        carPickSwipeLimit: 1,
+        carPickMode: "none",
+        //carPickSwipeLimit: 4,
     },
     // Start button
     ch:{
@@ -91,6 +94,8 @@ module.exports = {
         specialHunt: { x: 578, y:909, color: '#0e7c9c'},
         specialStart: { x: 1857, y: 729, color: '#c3fb12' },
         specialNext: { x: 1746, y: 927, color: '#c3fb12' },
+        navigation: navs.Scotland_LIGHTHOUSE_C,
+        nitroTick: 900 //900-perfect|300-double
     },
     common: {
         // The top token icon = #0090ff blue, there will be color difference
