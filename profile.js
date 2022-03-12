@@ -42,8 +42,8 @@ var mp2CarPickABC = {
     legend: ['D0', 'C0', 'B0', 'A0', 'S0'],
     platinum: ['D0', 'C0', 'B0', 'A0', 'S0'],
     gold: ['D0', 'C0', 'B0', 'A0', 'S0'],
-    silver: ['D0', 'C0', 'B0', 'A0', 'S0'],
-    bronze: ['D0', 'C0', 'B0', 'A0', 'S0']
+    silver: ['C4', 'B4', 'A4'],
+    bronze: ['D4']
 };
 var chCarPick = [32,35];
 var chCarPickABC = ['D4'];
@@ -78,8 +78,8 @@ module.exports = {
         status : mpStatus,
         carPick : mpCarPickABC,
         game: 2,
-        carPickMode: "none",
-        //carPickSwipeLimit: 4,
+        carPickMode: "ordinary-abc",
+        //carPickSwipeLimit: 4
     },
     // Start button
     ch:{
