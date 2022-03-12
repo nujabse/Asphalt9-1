@@ -220,7 +220,7 @@ module.exports = {
                     
                     case "unknow": {
                         var now = new Date().getTime();
-                        if ((now - timer) > 300000) {
+                        if ((now - timer) > 10000) {
                             Screenshot("blocked");
                             toastLog("(mp-br)blocked!restart!" + mpCheckState(true));
                             timer = new Date().getTime();
@@ -2008,7 +2008,7 @@ function Screenshot(name)
     var fn = name || "screencapture";
     // Save to storage
     var time = new Date().getTime();
-    var img = captureScreen("/storage/emulated/0/DCIM/Screenshots/"+fn+"-"+time+".png");
+    var img = captureScreen("/storage/emulated/0/Pictures/Screenshots/"+fn+"-"+time+".png");
 }
 //------
 function PressNitro()
