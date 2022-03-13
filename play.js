@@ -1244,7 +1244,8 @@ function chCheckState(debug) {
               || isButtonEdge(img, profile.mp.continue3, true)
               || isButtonEdge(img, profile.mp.continue4, true)
               || isButtonEdge(img, profile.mp.continue5, true)
-              || isButtonEdge(img, profile.mp.continue6, true);
+              || isButtonEdge(img, profile.mp.continue6, true)
+              || isButtonEdge(img, profile.mp.continue7, true);
               
     // Various dialogs
     var errorleft = isSimilar(img, profile.mp.errorleft, 3);

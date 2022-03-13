@@ -139,6 +139,7 @@ module.exports = {
         
         continue5: { x: 1945, y: 904, color: '#ffffff' }, //reward
         continue6: { x: 1741, y: 899, color: '#000921' }, //inverted
+        continue7: { x: 1580, y: 873, color: '#000921' }, //inverted
         
         advert1: { x: 1460, y: 825, color: '#9bff01' },
         
