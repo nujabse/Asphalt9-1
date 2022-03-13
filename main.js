@@ -25,7 +25,7 @@ const option_2 = require('./profile.js').mp2;
 const option_ch = require('./profile.js').ch;
 
 var huntCounts = 5;
-var huntEveryMinutes = huntCounts * 20;
+var huntEveryMinutes = huntCounts * 10;
 
 var mp1Counts = 1000;
 
