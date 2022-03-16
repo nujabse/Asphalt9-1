@@ -1245,7 +1245,8 @@ function chCheckState(debug) {
               || isButtonEdge(img, profile.mp.continue4, true)
               || isButtonEdge(img, profile.mp.continue5, true)
               || isButtonEdge(img, profile.mp.continue6, true)
-              || isButtonEdge(img, profile.mp.continue7, true);
+              || isButtonEdge(img, profile.mp.continue7, true)
+              || isButtonEdge(img, profile.mp.continue8, true);
               
     // Various dialogs
     var errorleft = isSimilar(img, profile.mp.errorleft, 3);
@@ -1825,7 +1826,7 @@ function isButtonEdge(img, point, debug)
     var pixel = images.pixel(img, point.x, point.y);
     var pixelOut = images.pixel(img, point.x-10, point.y-10);
     if (debug){
-        PrintPixel(img, point);
+        log(PrintPixel(img, point));
     }
     return colors.equals(pixel, point.color) && !colors.equals(pixelOut, point.color);
 }

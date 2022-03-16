@@ -135,11 +135,12 @@ module.exports = {
         continue1: { x: 1590, y: 890, color: '#c3fb12' },
         continue2: { x: 1590, y: 890, color: '#ffffff' },
         continue3: { x: 1640, y: 875, color: '#c3fb12' },
-        continue4: { x: 1874, y: 898, color: '#ffffff' }, //league up  
+        continue4: { x: 1874, y: 898, color: '#ffffff' }, //league up
         
         continue5: { x: 1945, y: 904, color: '#ffffff' }, //reward
         continue6: { x: 1741, y: 899, color: '#000921' }, //inverted
         continue7: { x: 1580, y: 873, color: '#000921' }, //inverted
+        continue8: { x: 1640, y: 875, color: '#000921' }, //ch-inverted
         
         advert1: { x: 1460, y: 825, color: '#9bff01' },
         
