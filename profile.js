@@ -58,7 +58,7 @@ module.exports = {
     specialPage: 2,
     eventPage: 3,
     networkPage: 4,
-    carHuntPosition: 5, // negative values mean from the end
+    carHuntPosition: 4, // negative values mean from the end
     adCloserFolder: './Images/AdCloser/', 
     signsFolder: './Images/TrafficSigns/',
     mpSignSet: 'ramp, ramp_left, ramp_right',
