@@ -29,23 +29,22 @@ var huntEveryMinutes = huntCounts * 12;
 
 var mp1Counts = 1000;
 
-var mp2Counts = 0;
-var mp2EveryMinutes = 30;
+var mp2Counts = 20;
+var mp2EveryMinutes = 5;
 
-for (;;) {
+for (; ;) {
     //ch
-    if (huntCounts > 0){
+    if (huntCounts > 0) {
         nowTime = new Date().getTime();
-        if ((nowTime - chTime) > (huntEveryMinutes*60000))
-        {
+        if ((nowTime - chTime) > (huntEveryMinutes * 60000)) {
             log("car hunt block begin");
-            
+
             //nowTime = new Date().getTime();
             HUNT.goingHome();
-            for ( let i = 0; i < huntCounts; i++ ) {
-                 
+            for (let i = 0; i < huntCounts; i++) {
+
                 HUNT.beforeRun(option_ch);
-                if(HUNT.chooseCar()){
+                if (HUNT.chooseCar()) {
                     sleep(5000);
                     HUNT.run(counter, option_ch);
                 } else
@@ -54,27 +53,27 @@ for (;;) {
             HUNT.goingHome();
             log("car hunt block finish");
             chTime = new Date().getTime(); //update time at finish
-        }    
+        }
     }
     //mp2
-    if (mp2Counts > 0){
+    if (mp2Counts > 0) {
 
         log("multiplayer 2 block begin");
         PLAY.goingHome();
 
-        for ( let i = 0; i < mp2Counts; i++ ) {
-        
+        for (let i = 0; i < mp2Counts; i++) {
+
             // check for hunt time 
-            if (huntCounts > 0){     
+            if (huntCounts > 0) {
                 nowTime = new Date().getTime();
-                toast(Math.ceil(huntEveryMinutes - ((nowTime - chTime)/60000)) + "min left to hunt");
+                toast(Math.ceil(huntEveryMinutes - ((nowTime - chTime) / 60000)) + "min left to hunt");
                 if ((nowTime - chTime) > huntEveryMinutes * 60000)
                     break;
             }
 
             PLAY.beforeRun(option_2);
-      
-            if(PLAY.chooseCar(option_2)){
+
+            if (PLAY.chooseCar(option_2)) {
                 sleep(25000);
                 PLAY.run(counter, option_2);
             } else {
@@ -89,29 +88,29 @@ for (;;) {
         mp2Time = new Date().getTime(); //update time at finish    
     }
     //mp1
-    if (mp1Counts > 0){
+    if (mp1Counts > 0) {
 
         log("multiplayer 1 block begin");
         PLAY.goingHome();
 
-        for ( let i = 0; i < mp1Counts; i++ ) {
-        
+        for (let i = 0; i < mp1Counts; i++) {
+
             // check for hunt time
-            if (huntCounts > 0){
+            if (huntCounts > 0) {
                 nowTime = new Date().getTime();
-                toast(Math.ceil(huntEveryMinutes - ((nowTime - chTime)/60000)) + "min left to hunt");
+                toast(Math.ceil(huntEveryMinutes - ((nowTime - chTime) / 60000)) + "min left to hunt");
                 if ((nowTime - chTime) > huntEveryMinutes * 60000)
                     break;
             }
             // check for mp2 time
-            if (mp2Counts > 0){
-                toast(Math.ceil(mp2EveryMinutes - ((nowTime - mp2Time)/60000)) + "min left to MP2");    
+            if (mp2Counts > 0) {
+                toast(Math.ceil(mp2EveryMinutes - ((nowTime - mp2Time) / 60000)) + "min left to MP2");
                 if ((nowTime - mp2Time) > mp2EveryMinutes * 60000)
                     break;
             }
             PLAY.beforeRun(option_1);
-      
-            if(PLAY.chooseCar(option_1)){
+
+            if (PLAY.chooseCar(option_1)) {
                 sleep(25000);
                 PLAY.run(counter, option_1);
             } else {
@@ -122,11 +121,11 @@ for (;;) {
             }
         }
         PLAY.goingHome();
-        log("multiplayer 1 block finish");    
+        log("multiplayer 1 block finish");
     }
     log("timeout for 1 min");
     sleep(5000);
 }
 
-toastLog("end script");   
+toastLog("end script");
 jexit();
