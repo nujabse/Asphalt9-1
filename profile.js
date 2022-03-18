@@ -43,10 +43,10 @@ var mp2CarPickABC = {
     platinum: ['D0', 'C0', 'B0', 'A0', 'S0'],
     gold: ['D0', 'C0', 'B0', 'A0', 'S0'],
     silver: ['C4', 'B4', 'A4'],
-    bronze: ['D4']
+    bronze: ['D5', 'B5', 'A5', 'S6']
 };
 var chCarPick = [32,35];
-var chCarPickABC = ['C4'];
+var chCarPickABC = ['B5', 'B4'];
 //var simpleRouteSelector = ['ramp.png', 'ramp_left', 'ramp_right'];
 
 module.exports = {
@@ -58,7 +58,7 @@ module.exports = {
     specialPage: 2,
     eventPage: 3,
     networkPage: 4,
-    carHuntPosition: 4, // negative values mean from the end
+    carHuntPosition: 7, // negative values mean from the end
     adCloserFolder: './Images/AdCloser/', 
     signsFolder: './Images/TrafficSigns/',
     mpSignSet: 'ramp, ramp_left, ramp_right',
@@ -87,7 +87,7 @@ module.exports = {
     ch:{
         start: { x: 1743, y: 900, color: '#c3fb12' },
         carPick : mpCarPickABC,
-        carPickMode: "down",
+        carPickMode: "flat-abc",
         noTicketLeft: { x: 171, y: 938, color: '#1c5ab1'},
 		noTicketRight: { x: 2172, y:938, color: '#1c5ab1'},
         carPickSwipeLimit: 6,
