@@ -58,8 +58,8 @@ module.exports = {
     specialPage: 2,
     eventPage: 3,
     networkPage: 4,
-    carHuntPosition: 7, // negative values mean from the end
-    adCloserFolder: './Images/AdCloser/', 
+    carHuntPosition: 9, // negative values mean from the end
+    adCloserFolder: './Images/AdCloser/',
     signsFolder: './Images/TrafficSigns/',
     mpSignSet: 'ramp, ramp_left, ramp_right',
     huntSignSet: 'ramp, ramp_left, ramp_right',
@@ -76,8 +76,8 @@ module.exports = {
     // Multiplayer 2 data
     mp2: {
         levelName : mp2LevelName,
-        status : mpStatus,
-        carPick : mpCarPickABC,
+        status : mp2Status,
+        carPick : mp2CarPickABC,
         game: 2,
         carPickMode: "ordinary-abc",
         //carPickSwipeLimit: 4,
@@ -96,7 +96,7 @@ module.exports = {
         specialHunt: { x: 578, y:909, color: '#0e7c9c'},
         specialStart: { x: 1857, y: 729, color: '#c3fb12' },
         specialNext: { x: 1746, y: 927, color: '#c3fb12' },
-        navigation: navs.Rome_BREAD_AND_CIRCUSES,
+        navigation: navs.The_Caribbean_ISLET_RACE,
         nitroTick: 900 //900-perfect|300-double
     },
     common: {
