@@ -24,13 +24,13 @@ const option_1 = require('./profile.js').mp1;
 const option_2 = require('./profile.js').mp2;
 const option_ch = require('./profile.js').ch;
 
-var huntCounts = 5;
-var huntEveryMinutes = huntCounts * 12;
+var huntCounts = 1;
+var huntEveryMinutes = 20;
 
 var mp1Counts = 1000;
 
-var mp2Counts = 20;
-var mp2EveryMinutes = 5;
+var mp2Counts = 10;
+var mp2EveryMinutes = 30;
 
 for (; ;) {
     //ch
