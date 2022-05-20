@@ -1,15 +1,14 @@
 Revival of the project <a href = "https://github.com/DrOmega9834/Asphalt9" target = "_blank">DrOmega9834\/Asphalt9</a>
 
-for Auto.js 4.1.0 <a href = "https://easydoc.xyz/doc/25791054/uw2FUUiw/3bEzXb4y" target = "_blank">Docs</a> <a href = "https://download.csdn.net/tagalbum/1611" target = "_blank">Downloads</a>
+for Auto.js *v4.1.1 alpha2* <a href = "https://hyb1996.github.io/AutoJs-Docs/#/?id=%e7%bb%bc%e8%bf%b0" target = "_blank">Docs</a> | <a href = "http://chorblack.top:8000/autojs/Auto.js-4.1.1%20Alpha2.apk" target = "_blank">Downloads</a>
 
-This project is being tested on the Xiaomi Mi 9 smartphone with a resolution of 1080x2340 pixels and an aspect ratio of 19.5:9.
-Default DPI most likely 392.
+This project is being tested on the Xiaomi Mi 9 smartphone with a resolution of 2340x1080.  
+Add new 2280x1080 profile (thanks to <a href = "https://github.com/Dexya" target = "_blank">Dexya</a>)
 
 installation instructions from the old version <a href = "./readme/README_EN.md" target = "_blank">Click here to read instructions</a>
 
 Already done: \ō͡≡o˞̶
-- multiplayer of the first network
-- multiplayer of the second network
+- multiplayer MP1 & MP2
 - car hunt (+ in special events)
 - options for choosing cars in the garage (ordinary/none/flat/up|down)
 - restart app when stuck
@@ -59,3 +58,7 @@ __format__: {*action*|time|option}
 <hr>
 
 ![image](https://user-images.githubusercontent.com/25618671/152342891-4ee37d45-b6a7-4d23-b15a-6b3c15208c96.png)
+___
+**Donation**  
+If you think my scripts is helpful for you, you can donate me, your donation is the best encouragement to me.  
+###### <a href = "https://paypal.me/AzamatGizatullin" target = "_blank">PayPalMe</a>

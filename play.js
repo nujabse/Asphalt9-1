@@ -8,6 +8,8 @@ var timer = new Date().getTime();
 var lastLevel = 0;
 var lastCar   = 0;
 var routeRegion = [850, 150, 650, 160];
+var adPkgSetRegion = [0, 300, 2340, 200];
+var adSeeSetRegion = [924, 887, 500, 160];
 
 module.exports = {
     base : {
@@ -39,12 +41,238 @@ module.exports = {
         {
             return ImageClicker('./Images/AdCloser2/');
         },
+        AdInfinte(packageName)
+        {
+            c = 0;
+            sleep(500);
+            var res = mpCheckState();
+            log('state = ' + res);
+            while(res == "unknow") {
+                //robot.swipe(2000, 400, 888, 400, 400);
+                sleep(1000); 
+                //if (!ImageClicker('./AdInfinite-B/'))
+                ImageClicker('./Images/AdInfinite-B/')
+                sleep(1000); 
+                robot.back();
+                sleep(5000); 
+                res = mpCheckState();   
+                log('state = ' + res);
+            }
+
+            var pos = null;
+            //go to the store
+            if (res == "index" || res == "home")
+            {
+                robot.click(1200,50); //store
+                sleep(6000); 
+
+                var pos = FindImage('./Images/AdInfinite-1/', 'Free.png', adPkgSetRegion);
+                if (pos == null)
+                {
+                    robot.click(1200,50); //store to begin
+                    sleep(3000); 
+                }
+                log('store');
+            }
+
+            //find > free button
+            var pos = FindImage('./Images/AdInfinite-1/', 'Free.png', adPkgSetRegion);
+            while(pos == null && c < 8) {
+                robot.swipe(1500, 400, 500, 400, 400);
+                sleep(1000); 
+                c++;
+                pos = FindImage('./Images/AdInfinite-1/', 'Free.png', adPkgSetRegion);
+            }
+
+            //go free ad
+            if (pos)
+               robot.click(pos.x, pos.y); 
+            else
+                return "error";
+            log('free ad');
+            sleep(6000);
+
+            
+            //let see advert
+            c = 0;
+            pos = FindImage('./Images/AdInfinite-1/', 'See-ad.png', adSeeSetRegion);
+            while(pos == null && c < 200) {
+                c++;
+                sleep(100); 
+                pos = FindImage('./Images/AdInfinite-1/', 'See-ad.png', adSeeSetRegion);
+            }
+            if (pos)
+               robot.click(pos.x, pos.y); 
+            else   
+            {
+                var img = captureScreen();
+                var isGreenBtn = isSimilar(img, {x: 950, y: 920, color: "#c3fb12"}, 5);
+                if (isGreenBtn)
+                    robot.click(950, 920);
+                else
+                    return "noads";
+            }    
+            log('see ad');
+            //faster way
+            var adStartTime =  new Date().getTime();
+            var nowTime = new Date().getTime();
+            sleep(10000);
+            c = 0;
+            while(c < 45 && (nowTime - adStartTime) < 60000) {
+                nowTime = new Date().getTime();
+                sleep(1000); 
+                c = c + 1;
+
+                if ((nowTime - adStartTime)%10000 == 0)
+                    toastLog(c + " seconds");
+
+                if (ImageFinder('./Images/AdCloser/'))
+                    c = 45;
+            }   
+            //sleep(60000);
+            log('60 sec gone');
+            
+            CloseApp();
+            CloseApp();
+            CloseApp();
+            sleep(5000);
+
+            toastLog("restart " + packageName);
+            //launchApp("Asphalt 9");
+            launch(packageName);
+            sleep(25000);
+            
+            // Close popups
+            c = 0;
+            sleep(500);
+            var res = mpCheckState();
+            while(res == "unknow" || res == "next") {
+                //robot.swipe(2000, 400, 500, 400, 400);
+                sleep(1000);
+                c = c + 1;
+
+                if ((nowTime - adStartTime)%10000 == 0)
+                    toastLog(c + " seconds");
+
+                if (!ImageClicker('./Images/AdCloser2/'))
+                    robot.back();
+                sleep(5000); 
+                res = mpCheckState();   
+            }        
+            /*
+            c = 0;
+            var ic = 0;
+            res = mpCheckState();
+            log('state = ' + res);
+            while(res != "home" && res != "index" ) {
+                //c++;
+                if (ImageClicker('./Images/AdCloser/'))
+                {
+                    sleep(10000);
+                    ic++;
+                    if (ic > 3)
+                        robot.back();
+                    if (ic > 10)
+                        ImageClicker('./Images/AdInfinite-S/')       
+                    if (ic > 12)
+                        return "error";
+                }
+                else
+                {
+                    robot.back();
+                }
+                sleep(5000); 
+                res = mpCheckState();
+                log('state = ' + res);
+            }
+            if (res == "unknow")
+                return "error";
+
+            
+            c = 0;
+            pos = FindImage('./AdInfinite-1/', 'See-ad.png');
+            while(pos == null && c < 3) {
+                c++;
+                if (!ImageClicker('./AdCloser/'))
+                    robot.back();
+                log('try back ' + c);
+                sleep(5000); 
+                pos = FindImage('./AdInfinite-1/', 'See-ad.png');
+            }
+            if (pos == null)
+                return "noads";*/
+            return "ok";
+        },
+        TicketInfinte(cnt)
+        {
+            for ( let i = 0; i < cnt; i++ ) {
+                toastLog("grind ticket " + (i + 1));
+                // CHECK START SCREEN
+                var img = captureScreen();
+        
+                var isToken = isEquals(img, profile.common.token);
+                var isCredit = isEquals(img, profile.common.credit);
+                var isBack = isSimilar(img, profile.common.back, 5) && isSimilar(img, profile.common.backward, 5);
+                var isEventPage = isMarker(img, profile.eventPage, profile.common.pagesMarker);
+                
+                if (isToken && isCredit && !isBack && !isEventPage)
+                {
+                    pressMarkerButton(profile.eventPage, profile.common.pagesMarker)            
+                }
+                // ENTER EVENTS
+                pressMarkerButton(profile.eventPage, profile.common.pagesMarker)     
+                sleep(2000);
+                
+                // TICKETS
+                robot.click(2012, 201);
+                sleep(12000);
+                
+                // CHECK AD BUTTON
+                img = captureScreen();
+                if (!isButtonEdge(img, {x: 1600, y: 675, color: "#ff0054"}, false))
+                {
+                    return "full";
+                } 
+                if (isButtonEdge(img, {x: 1600, y: 726, color: "#ffffff"}, false))
+                {
+                    // WATCH AD
+                    robot.click(1600, 726);
+                    sleep(45000);
+                    
+                    robot.swipe(2300, 600, 800, 610, 300);
+                    sleep(1000);
+                    robot. click(2270, 780);
+                    sleep(1000);
+                    robot.swipe(1200, 600, 100, 611, 200);
+                    sleep(1000);
+                   
+                    // LAUNCH A9
+                    launchApp("Asphalt 9");
+                    sleep(25000);
+                    
+                    // Close popups
+                    c = 0;
+                    sleep(500);
+                    var res = mpCheckState();
+                    while(res == "unknow") {
+                        robot.swipe(2000, 400, 500, 400, 400);
+                        sleep(1000); 
+                        if (!ImageClicker('./Images/AdCloser2/'))
+                            robot.back();
+                        sleep(5000); 
+                        res = mpCheckState();   
+                    }
+                }
+            }
+            return "done";
+        },
         adjustSwipeFlat(carNumber, swipeLimit){
             var firstCar = profile.garage.firstCarFlat;
             var distance = profile.garage.distanceFlat;
 
             var carPoint = locateCar(carNumber, swipeLimit, firstCar, distance);
-            var img = captureScreen();
+            var _img = captureScreen();
+            var img = images.copy(_img);
             toastLog(PrintPixel(img, carPoint));
         },
         adjustSwipe(carNumber, swipeLimit){
@@ -52,7 +280,8 @@ module.exports = {
             var distance = profile.garage.distance;
 
             var carPoint = locateCar(carNumber, swipeLimit, firstCar, distance);
-            var img = captureScreen();
+            var _img = captureScreen();
+            var img = images.copy(_img);
             toastLog(PrintPixel(img, carPoint));
         },
         swipeEventsAtEnd()
@@ -367,7 +596,7 @@ module.exports = {
                     if ((nowTime - nitroTime) > nitroTick)
                     {   
                         nitroTime = new Date().getTime();
-                    PressNitro();
+                        PressNitro();
                     }
                     if (profile.mpSignSet && (nowTime - routeTime) > 3000)
                     {
@@ -715,6 +944,25 @@ module.exports = {
                                     PressNitro();
                                 }
 
+                                if (item.type == "normal-nitro")
+                                {
+                                    PressNitro();
+                                }
+
+                                if (item.type == "perfect-nitro")
+                                {
+                                    PressNitro();
+                                    sleep(750);
+                                    PressNitro();
+                                }
+
+                                if (item.type == "double-nitro")
+                                {
+                                    PressNitro();
+                                    sleep(300);
+                                    PressNitro();
+                                }
+
                                 if (item.type == "flash")
                                 {
                                     PressNitro();
@@ -747,7 +995,7 @@ module.exports = {
                         nitroTime = new Date().getTime();
                         PressNitro();
                     }
-                    if (currentRoute && (nowTime - routeTime) > 3000)
+                    if (currentRoute && (nowTime - routeTime) > 2000)
                     {
                         var t = SignClicker(currentRoute, routeRegion);
                         if (t)
@@ -776,7 +1024,8 @@ module.exports = {
             //{
                 robot.click(2012, 201);
                 sleep(10000);
-                img = captureScreen();
+                var _img = captureScreen();
+                var img = images.copy(_img);
                 if (!isButtonEdge(img, {x: 1600, y: 675, color: "#ff0054"}, false))
                 {
                     //robot.back();
@@ -1027,16 +1276,51 @@ module.exports = {
                 toastLog("No fuel.");
             }
             
+            if (profile.ch.carPickMode == "flat-abc")
+            {
+                var FOUND = hasFuelFlatABC(profile.ch.carPick);
+
+                log("chooseCar>> FOUND = " + FOUND);            
+                if (FOUND){
+                    // Find a car with gas
+                    sleep(4000);
+                    
+                    // Check if car available fuel
+                    if (IsFlashingButton(profile.garage.start, 7) || IsFlashingButton(profile.garage.istart, 7))
+                    {
+                        log("chooseCar>> READY");
+                        robot.click(profile.mp.goldenPoint.x, profile.mp.goldenPoint.y);
+                        return true;
+                    }
+                }
+                toastLog("No fuel.");
+                return false;   
+            }
             return false;
         },  
         //----------------------------------------------------------------------
-        run(cnt) {
+        run(cnt, option) {
                         
             var runTime = new Date().getTime();
             var tries = 0;
             var brkc = 4;
             var chStatus = "";
             var routeTime =  new Date().getTime();
+            var nitroTime =  new  Date().getTime();
+            var raceStart  = false;
+            var raceTime =   null;
+ 
+            //check nav data 
+             var route = null;
+            if (profile.ch.navigation != null)
+                route = parseNavigation(profile.ch.navigation);
+            
+            var nitroTick = 200;
+            if (option.nitroTick != null)
+                nitroTick = option.nitroTick;
+
+            var currentRoute = profile.huntSESignSet;
+
             // Check if you have reached the checkout interface
             while (true) {
                 var nowTime = new Date().getTime();
@@ -1074,23 +1358,99 @@ module.exports = {
                 }
                 // If you have not finished running, you can still click on nitrogen
                 else {
+                    if (!raceStart && chStatus == "race")
+                    {
+                        raceStart = true;
+                        raceTime =  new Date().getTime();
+                    }
                     // reset accidental exit 
                     tries = 0;
-                    brkc--;
+                    /*brkc--;
                     if (brkc < 0)
                     {
                         brkc = 2;
                         PressBrake();
-                    }
-                    PressNitro();
-                    if (profile.huntSESignSet && (nowTime - routeTime) > 3000)
+                    }*/
+                    if (raceStart && route != null)
                     {
-                        var t = SignClicker(profile.huntSESignSet, routeRegion);
+                        for (let i = 0; i < route.length; i++) {
+                            let item = route[i];
+                            if (!item.fire && (nowTime-raceTime) > item.time)
+                            {
+                                item.fire = true;
+
+                                if (item.type == "drift")
+                                    PressBrake(item.dur);
+
+                                if (item.type == "drift-flash")
+                                {
+                                    PressBrake(item.dur);
+                                    sleep(50);
+                                    PressNitro();
+                                    PressNitro();
+                                }
+
+                                if (item.type == "normal-nitro")
+                                {
+                                    PressNitro();
+                                }
+
+                                if (item.type == "perfect-nitro")
+                                {
+                                    PressNitro();
+                                    sleep(750);
+                                    PressNitro();
+                                }
+
+                                if (item.type == "double-nitro")
+                                {
+                                    PressNitro();
+                                    sleep(300);
+                                    PressNitro();
+                                }
+
+                                if (item.type == "flash")
+                                {
+                                    PressNitro();
+                                    PressNitro();
+                                }
+
+                                if (item.type == "360")
+                                {
+                                    PressBrake();
+                                    PressBrake();
+                                }
+
+                                if (item.type == "360-flash")
+                                {
+                                    PressBrake();
+                                    PressBrake();
+                                    sleep(50);
+                                    PressNitro();
+                                    PressNitro();
+                    }
+
+                                if (item.type == "route")
+                                    currentRoute = item.path
+                            }
+                        }
+                    }
+
+                    if ((nowTime - nitroTime) > nitroTick)
+                    {   
+                        nitroTime = new Date().getTime();
+                    PressNitro();
+                    }
+                    if (currentRoute && (nowTime - routeTime) > 2000)
+                    {
+                        var t = SignClicker(currentRoute, routeRegion);
                         if (t)
+                        {
                             routeTime =  new Date().getTime();
                     }
                 }
-                sleep(950);
+                }
+                sleep(100);
             }
             toastLog(++cnt.CH + " car hunt done, t.avg" +parseInt((nowTime - startTime)/1000/cnt.CH)+" second.");
         },
@@ -1111,7 +1471,8 @@ function mpCheckState(debug) {
 
     var state = "unknow";
 
-    var img = captureScreen();
+    var _img = captureScreen();
+    var img = images.copy(_img);
     
     var isToken = isEquals(img, profile.common.token);
     var isCredit = isEquals(img, profile.common.credit);
@@ -1134,7 +1495,7 @@ function mpCheckState(debug) {
     var isNetworkPage = isMarker(img, profile.networkPage, profile.common.pagesMarker);
    
     var racePause = isSimilar(img, profile.common.racePause, 3);
-    var raceTD = isSimilar(img, profile.common.raceTD, 3);
+    var raceTD = isSimilar(img, profile.common.raceTD, 5);
     var raceTime = isSimilar(img, profile.common.raceTime, 20);
     var isRace = racePause && raceTD && raceTime; 
     
@@ -1214,7 +1575,8 @@ function chCheckState(debug) {
 
     var state = "unknow";
 
-    var img = captureScreen();
+    var _img = captureScreen();
+    var img = images.copy(_img);
     
     var isToken = isEquals(img, profile.common.token);
     var isCredit = isEquals(img, profile.common.credit);
@@ -1315,7 +1677,8 @@ function chseCheckState(debug) {
 
     var state = "unknow";
 
-    var img = captureScreen();
+    var _img = captureScreen();
+    var img = images.copy(_img);
     
     var isToken = isEquals(img, profile.common.token);
     var isCredit = isEquals(img, profile.common.credit);
@@ -1427,10 +1790,10 @@ function hasFuelABC(level, cars)
     while((nowTime - startTime) < (2*60000)) {
         nowTime = new Date().getTime();
 
-        var img = captureScreen();
+        var _img = captureScreen();
+        var img = images.copy(_img);
 
-        var canGo = isSimilar(img, {x: 1664, y: 914, color: "#ff0054"}, 3) && !(isEquals(img, {x: 1813, y: 1015, color: "#ffffff"}) || isEquals(img, {x: 1813, y: 1015, color: "#000921"}));
-        if (canGo)
+        if (CarCanGo(img))
         {    
             var currCarStar = GetCarStar(img);
             var currCarClass = GetCarClass(img);
@@ -1448,7 +1811,7 @@ function hasFuelABC(level, cars)
         }
         //prev car
         robot.click( 818, 538);
-        sleep(300);
+        sleep(profile.garage.switchSpeed);
     }        
     return false;
 }
@@ -1469,10 +1832,10 @@ function hasFuelFlatABC(cars)
     while((nowTime - startTime) < (2*60000)) {
         nowTime = new Date().getTime();
 
-        var img = captureScreen();
+        var _img = captureScreen();
+        var img = images.copy(_img);
 
-        var canGo = isSimilar(img, {x: 1664, y: 914, color: "#ff0054"}, 3) && !(isEquals(img, {x: 1813, y: 1015, color: "#ffffff"}) || isEquals(img, {x: 1813, y: 1015, color: "#000921"}));
-        if (canGo)
+        if (CarCanGo(img))
         {    
             var currCarStar = GetCarStar(img);
             var currCarClass = GetCarClass(img);
@@ -1490,49 +1853,55 @@ function hasFuelFlatABC(cars)
         }
         //prev car
         robot.click( 818, 538);
-        sleep(300);
+        sleep(profile.garage.switchSpeed);
     }        
     return false;
+}
+//------
+function CarCanGo(img)
+{
+    return isSimilar(img, profile.garage.canGo1, 3) && !(isEquals(img, profile.garage.cantGo1) || isEquals(img, profile.garage.cantGo2));;
 }
 //------
 function GetCarStar(img)
 {
     var currStar = 0;
 
-    if (isSimilar(img, {x: 516, y: 148, color: "#ffea3a"}, 3))
+    if (isSimilar(img, profile.garage.star6, 3))
         currStar = 6;
-    else if (isSimilar(img, {x: 475, y: 148, color: "#ffeb3d"}, 3))
+    else if (isSimilar(img, profile.garage.star5, 3))
         currStar = 5;
-    else if (isSimilar(img, {x: 433, y: 148, color: "#ffea3a"}, 3))
+    else if (isSimilar(img, profile.garage.star4, 3))
         currStar = 4;
-    else if (isSimilar(img, {x: 392, y: 148, color: "#ffec3e"}, 3))
+    else if (isSimilar(img, profile.garage.star3, 3))
         currStar = 3;
-    else if (isSimilar(img, {x: 350, y: 148, color: "#ffea3a"}, 3))
+    else if (isSimilar(img, profile.garage.star2, 3))
         currStar = 2;
-    else if (isSimilar(img, {x: 309, y: 148, color: "#ffec3d"}, 3))
+    else if (isSimilar(img, profile.garage.star1, 3))
         currStar = 1;
     return currStar;
 }
 //------
 function GetCarClass(img)
 {
-    var img = captureScreen();
+    var _img = captureScreen();
+    var img = images.copy(_img);
     var currClass = 'D';
 
-    if (isSimilar(img, {x: 2150, y: 220, color: "#162431"}, 5))
+    if (isSimilar(img, profile.garage.isClassA, 5))
     {    
         currClass = 'A';
     }
-    else if (isSimilar(img, {x: 2149, y: 208, color: "#162431"}, 5))
+    else if (isSimilar(img, profile.garage.isClassBS, 5))
     {
-        if (isSimilar(img, {x: 2135, y: 213, color: "#162431"}, 5))
+        if (isSimilar(img, profile.garage.isClassB, 5))
             currClass = 'B';    
         else
             currClass = 'S'; 
     }
     else 
     {
-        if (isSimilar(img, {x: 2163, y: 208, color: "#162431"}, 5))
+        if (isSimilar(img, profile.garage.isClassD, 5))
             currClass = 'D';    
         else
             currClass = 'C'; 
@@ -1556,7 +1925,8 @@ function hasFuel(level, cars, swipeLimit) {
         var carPoint = locateCar(n, swipeLimit, firstCar, distance);
 
         sleep(1000);
-        var img = captureScreen();
+        var _img = captureScreen();
+        var img = images.copy(_img);
         log(PrintPixel(img, carPoint));
         var carcheckState = images.pixel(img, carPoint.x, carPoint.y);
         
@@ -1610,7 +1980,8 @@ function hasFuelFlat(cars, swipeLimit) {
         var carPoint = locateCar(n, swipeLimit, firstCar, distance);
 
         sleep(1000);
-        var img = captureScreen();
+        var _img = captureScreen();
+        var img = images.copy(_img);
         log(PrintPixel(img, carPoint));
         var carcheckState = images.pixel(img, carPoint.x, carPoint.y);
 
@@ -1781,10 +2152,10 @@ function pressMarkerButton(num, data)
         }
         else
         {
-        var x = data.x + (num -1)*data.delta + data.pressXOffset;
-        var y = data.y + data.pressYOffset;
-        //toastLog("x: " + x + " y: " + y);
-        robot.click(x, y);
+            var x = data.x + (num -1)*data.delta + data.pressXOffset;
+            var y = data.y + data.pressYOffset;
+            //toastLog("x: " + x + " y: " + y);
+            robot.click(x, y);
             sleep(2500);
             robot.click(x, y);
         }
@@ -1820,7 +2191,8 @@ function isMarker(img, num, data)
 {
     var x = data.x + (num -1)*data.delta; 
     var p = images.pixel(img, x, data.y);
-    return colors.equals(p, data.color);
+    //return colors.equals(p, data.color);
+    return colors.isSimilar(p, data.color, 6, "diff");
 }
 //------
 function isNetworkGames(img)
@@ -1867,7 +2239,8 @@ function IsFlashingButton(point, timeoutSec)
             break;
         }
         // Check if car available fuel
-        var img = captureScreen();
+        var _img = captureScreen();
+        var img = images.copy(_img);
         if (isSimilar(img, point, 10))
             tries++;
 
@@ -1887,7 +2260,8 @@ function ImageFinder(folder, region)
     var list = files.listDir(folder);
     var len = list.length;
     if(len > 0){
-        var imgad = captureScreen();
+        var _img = captureScreen();
+        var imgad = images.copy(_img);
         for(let i = 0; i < len; i++){
             var fileName = list[i];
             if (fileName.toLowerCase().endsWith(".png") || fileName.toLowerCase().endsWith(".jpg"))
@@ -1924,7 +2298,8 @@ function SignClicker(filter, region)
     var list = filter.split(',');;
     var len = list.length;
     if(len > 0){
-        var imgad = captureScreen();
+        var _img = captureScreen();
+        var imgad = images.copy(_img);
         for(let i = 0; i < len; i++){
             var fileName = files.join(folder, list[i].trim()+'.png');
             log(fileName);
@@ -1963,7 +2338,8 @@ function ImageClicker(folder, region)
     var list = files.listDir(folder);
     var len = list.length;
     if(len > 0){
-        var imgad = captureScreen();
+        var _img = captureScreen();
+        var imgad = images.copy(_img);
         for(let i = 0; i < len; i++){
             var fileName = list[i];
             if (fileName.toLowerCase().endsWith(".png") || fileName.toLowerCase().endsWith(".jpg"))
@@ -2003,7 +2379,8 @@ function FindImage(folder, fileName, region)
     var path = files.join(folder, fileName);
     if (!files.isFile(path))
         return null;
-    var imgad = captureScreen();
+    var _img = captureScreen();
+    var imgad = images.copy(_img);
     var template = images.read(path);
     var pos = null;
     if (region)
@@ -2075,6 +2452,27 @@ function parseNavigation(nav)
                     time: parseInt(navParams[0], 10), 
                     dur: parseInt(navParams[2], 10)});
             }
+            if (navParams[1] == "normal-nitro")
+            {
+                res.push({
+                    fire: false, 
+                    type:"normal-nitro", 
+                    time: parseInt(navParams[0], 10)});
+            }
+            if (navParams[1] == "perfect-nitro")
+            {
+                res.push({
+                    fire: false, 
+                    type:"perfect-nitro", 
+                    time: parseInt(navParams[0], 10)});
+            }
+            if (navParams[1] == "double-nitro")
+            {
+                res.push({
+                    fire: false, 
+                    type:"double-nitro", 
+                    time: parseInt(navParams[0], 10)});
+            }                    
             if (navParams[1] == "flash")
             {
                 res.push({
@@ -2161,3 +2559,132 @@ function Restart(appName){
     }
 }
 //------
+function RestartWithReset(appName){
+    log("Restart>> " + appName);
+    openAppSetting(getPackageName(appName));
+    sleep(3500);
+
+    // close
+    robot.click(950, 1020);
+    sleep(1000);
+
+    // ok
+    robot.click(1372, 770);
+    sleep(1000);
+
+    // safe cache
+    shell("mv /mnt/sdcard/Android/obb/com.gameloft.android.ANMP.GloftA9HM /mnt/sdcard/Android/obb/com.gameloft.android.ANMP1.GloftA9HM", false);
+
+    // clear
+    robot.click(1330, 1020);
+    sleep(1000);
+
+    // clear all
+    robot.click(800, 467);
+    sleep(1000);
+    
+    // ok
+    robot.click(1372, 770);
+    sleep(1000);
+    
+    // restore cache
+    shell("mv /mnt/sdcard/Android/obb/com.gameloft.android.ANMP1.GloftA9HM /mnt/sdcard/Android/obb/com.gameloft.android.ANMP.GloftA9HM", false);
+    
+    /*
+    var c = 0;
+    openAppSetting(getPackageName(appName));
+    sleep(500);
+    while(!click("ОСТАНОВИТЬ")) {
+        if (c++ > 6) {
+           toastLog("kill V timeout!");
+           break;
+        }
+        sleep(5000);
+    }
+    c = 0;
+    sleep(500);
+    while(!click("ОК")) {
+        if (c++ > 3) {
+            toastLog("confirm V timeout!");
+            break;
+        }
+        sleep(5000);
+    }
+    
+    shell("am force-stop com.gameloft.android.ANMP.GloftA9HM", false);
+    sleep(1000);
+    shell("mv /mnt/sdcard/Android/obb/com.gameloft.android.ANMP.GloftA9HM /mnt/sdcard/Android/obb/com.gameloft.android.ANMP1.GloftA9HM", false);
+    sleep(500);
+    shell("pm clear com.gameloft.android.ANMP.GloftA9HM", false);
+    sleep(500);
+    shell("mv /mnt/sdcard/Android/obb/com.gameloft.android.ANMP1.GloftA9HM /mnt/sdcard/Android/obb/com.gameloft.android.ANMP.GloftA9HM", false);
+    sleep(500);  */
+    launchApp(appName);
+    sleep(5000);
+    robot.click(1750, 1015); //choose 4g
+    sleep(5000);
+    robot.click(1750, 1015); //choose 4g
+    sleep(5000);
+    robot.click(1750, 1015); //choose 4g
+    sleep(35000);
+    //---------------
+    // I N I I T
+    
+    robot.click(770, 188); //age editor
+    sleep(1000);
+    
+    robot.click(900,670); //2
+    sleep(1000);
+    
+    robot.click(900,670); //2
+    sleep(1000);
+    
+    robot.click(1960, 1015); //ok
+    sleep(1000);
+    
+    robot.click(215, 697); //v
+    sleep(1000);
+    
+    robot.click(1170, 968); //принять
+    sleep(1000);
+    
+    robot.click(1158, 985); //принять
+    sleep(15000);
+    
+    if (profile.accountType == "google")
+    {
+        robot.click(701, 300); //google
+        sleep(10000);
+    }
+    if (profile.accountType == "facebook")
+    {
+        robot.click(701, 710); //facebook
+        sleep(7000);
+    
+        robot.click(1162, 995); //as user
+        sleep(15000);
+    }
+    
+    robot.click(2100, 875); //switch acc B
+    sleep(5000);
+    
+    robot.click(578, 761); //yes
+    sleep(20000);
+    
+    for(let j = 0; j < 5; j++) {
+        robot.swipe(2000, 400, 500, 400, 400);
+        sleep(500);
+    } 
+    
+    c = 0;
+    sleep(500);
+    var res = mpCheckState();
+    while(res == "unknow") {
+        robot.swipe(2000, 400, 500, 400, 400);
+        sleep(1000); 
+        if (!ImageClicker('./AdCloser2/'))
+            robot.back();
+        sleep(5000); 
+        res = mpCheckState();   
+    }
+}

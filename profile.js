@@ -96,7 +96,7 @@ module.exports = {
         specialHunt: { x: 578, y: 909, color: '#0e7c9c' },
         specialStart: { x: 1857, y: 729, color: '#c3fb12' },
         specialNext: { x: 1746, y: 927, color: '#c3fb12' },
-        navigation: navs.The_Caribbean_ISLET_RACE,
+        navigation: navs.Auckland_SIDE_VIEW,
         nitroTick: 900 //900-perfect|300-double
     },
     common: {
@@ -163,11 +163,22 @@ module.exports = {
     garage: {
         start: { x: 1800, y: 888, color: '#c3fb12' },
         istart: { x: 1800, y: 888, color: '#000921' },
-        speed: { x: 245, y: 430, color: '#33effa' },
-        accel: { x: 245, y: 530, color: '#33effa' },
-        handl: { x: 245, y: 630, color: '#33effa' },
-        nitro: { x: 245, y: 730, color: '#33effa' },
-        ready: { x: 1664, y: 914, color: '#fd0154' },
+
+        star1: { x: 309, y: 148, color: "#ffec3d" }, 
+        star2: { x: 350, y: 148, color: "#ffea3a" }, 
+        star3: { x: 392, y: 148, color: "#ffec3e" }, 
+        star4: { x: 433, y: 148, color: "#ffea3a" }, 
+        star5: { x: 475, y: 148, color: "#ffeb3d" }, 
+        star6: { x: 516, y: 148, color: "#ffea3a" }, 
+
+        isClassA: { x: 2150, y: 220, color: "#162431" }, 
+        isClassBS: { x: 2149, y: 208, color: "#162431" }, 
+        isClassB: { x: 2135, y: 213, color: "#162431" }, 
+        isClassD: { x: 2163, y: 208, color: "#162431" }, 
+
+        canGo1: { x: 1664, y: 914, color: "#ff0054" }, 
+        cantGo1: { x: 1813, y: 1015, color: "#ffffff" }, 
+        cantGo2: { x: 1813, y: 1015, color: "#000921" }, 
 
         // league buttons
         bronze: { x: 1470, y: 248, color: '#ce7145' },
@@ -176,6 +187,7 @@ module.exports = {
         platinum: { x: 1870, y: 248, color: '#5d3eb6' },
         legend: { x: 2000, y: 248, color: '#3f3f3d' },
         swipeDuration: 1500,
+        switchSpeed: 300,
 
         // current league
         league: { x: 740, y: 500, colorUnranked: '#ff0026', colorBronze: '#d98560', colorSilver: '#96b2d4', colorGold: '#f2cb30', colorPlatinum: '#000000', colorLegend: '#f6e2a5' },
