@@ -1,10 +1,10 @@
 const navs = require('./navigations.js');
 // Whether the legendary, platinum, gold, silver, and bronze cars are available, true means available, false means unavailable
 var mpLevelName = ['legend', 'platinum', 'gold', 'silver', 'bronze'];
-var mpStatus    = [ false,    false,      true,  true,     true];
+var mpStatus    = [ false,    true,      true,  true,     true];
 var mpCarPickABC = {
     legend: ['B5', 'A5', 'S5'],
-    platinum: ['C5', 'B5', 'A4'],
+    platinum: ['A5','A4','B5', 'C5'],
     gold: ['C4', 'B4', 'B5'],
     silver: ['D4', 'C4'],
     bronze: ['D4']
